@@ -1,0 +1,638 @@
+/* ================================================================
+   style.css — GetKnowGit
+   Palet warna, tipografi, layout Flexbox/Grid responsif
+   Memenuhi kontras WCAG AA pada semua kombinasi teks/latar.
+   ================================================================ */
+
+/* ----------------------------------------------------------------
+   1. CSS CUSTOM PROPERTIES (Design Tokens)
+   ---------------------------------------------------------------- */
+:root {
+  /* Warna latar & permukaan */
+  --color-bg:        #F8FAFC;   /* latar halaman */
+  --color-surface:   #FFFFFF;   /* permukaan kartu */
+  --color-border:    #E2E8F0;   /* garis batas tipis */
+
+  /* Warna teks */
+  --color-text:      #1E293B;   /* teks utama – kontras ≥7:1 di atas putih */
+  --color-text-muted:#475569;   /* teks sekunder / deskripsi */
+
+  /* Aksen */
+  --color-blue:      #2563EB;   /* aksen utama – nomor tahap, judul */
+  --color-teal:      #0F766E;   /* aksen perintah kode */
+  --color-orange:    #D97706;   /* aksen tips / peringatan */
+
+  /* Turunan aksen – latar lembut untuk badge & chip */
+  --color-blue-light: #EFF6FF;
+  --color-teal-light: #F0FDFA;
+  --color-orange-light:#FFFBEB;
+
+  /* Tipografi */
+  --font-sans:   -apple-system, "Segoe UI", system-ui, sans-serif;
+  --font-mono:   "SFMono-Regular", "Consolas", "Liberation Mono", monospace;
+
+  /* Ruang & bentuk */
+  --radius:      12px;
+  --radius-sm:   6px;
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.07), 0 1px 2px -1px rgb(0 0 0 / 0.05);
+  --max-width:   960px;
+}
+
+/* ----------------------------------------------------------------
+   2. RESET MINIMAL
+   ---------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ----------------------------------------------------------------
+   3. BASE / TYPOGRAFI GLOBAL
+   ---------------------------------------------------------------- */
+body {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Semua elemen <code> inline menggunakan font monospace teal */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  color: var(--color-teal);
+  background-color: var(--color-teal-light);
+  padding: 0.1em 0.4em;
+  border-radius: var(--radius-sm);
+}
+
+/* ----------------------------------------------------------------
+   4. HEADER
+   ---------------------------------------------------------------- */
+.site-header {
+  background-color: var(--color-blue);
+  color: #FFFFFF;
+  padding: 2.5rem 1.5rem 2.75rem;
+  text-align: center;
+}
+
+/* Batas lebar konten header */
+.header-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* Baris brand: ikon + judul */
+.header-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* Ikon ⎇ di sebelah judul */
+.brand-icon {
+  font-size: 2rem;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+/* Judul utama H1 */
+.brand-title {
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+}
+
+/* Subjudul di bawah judul */
+.brand-subtitle {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.85);
+  max-width: 480px;
+}
+
+/* Badge topik */
+.badge {
+  display: inline-block;
+  margin-top: 0.25rem;
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-blue);
+  background-color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* ----------------------------------------------------------------
+   5. MAIN WRAPPER
+   ---------------------------------------------------------------- */
+.site-main {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 3.5rem;
+}
+
+/* ----------------------------------------------------------------
+   6. SECTION UMUM (judul section + deskripsi)
+   ---------------------------------------------------------------- */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header tiap section */
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+/* Judul section H2 */
+.section-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+  position: relative;
+  padding-left: 0.9rem;
+}
+
+/* Garis aksent biru di kiri judul section */
+.section-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.1em;
+  bottom: 0.1em;
+  width: 4px;
+  border-radius: 999px;
+  background-color: var(--color-blue);
+}
+
+/* Deskripsi singkat di bawah judul section */
+.section-desc {
+  color: var(--color-text-muted);
+  font-size: 0.925rem;
+  padding-left: 0.9rem;
+}
+
+/* ----------------------------------------------------------------
+   7. SECTION 1 – STAGES GRID (Alur 4 Tahap Git)
+   ---------------------------------------------------------------- */
+
+/* Grid 4 kolom di layar lebar, 2 kolom di tablet, 1 kolom di mobile */
+.stages-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  align-items: stretch; /* semua kartu per baris sama tinggi */
+}
+
+/* Kartu tahap */
+.stage-card {
+  position: relative;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  height: 100%;           /* isi penuh sel grid */
+  box-shadow: var(--shadow-card);
+  /* Efek hover CSS murni – outline saat fokus keyboard */
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.stage-card:hover {
+  border-color: var(--color-blue);
+  box-shadow: 0 4px 12px 0 rgb(37 99 235 / 0.12);
+}
+
+/* Nomor tahap (01–04) */
+.stage-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--color-blue);
+  font-family: var(--font-mono);
+  line-height: 1;
+  opacity: 0.9;
+}
+
+/* Konten teks di dalam kartu */
+.stage-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+/* Nama tahap H3 */
+.stage-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+/* Deskripsi satu kalimat di kartu tahap */
+.stage-body .stage-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+  padding-left: 0; /* override dari .section-desc */
+}
+
+/* Blok perintah di bawah deskripsi */
+.stage-command {
+  margin-top: auto;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Label "Perintah utama" */
+.command-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* Kode perintah – blok penuh dengan latar teal lembut */
+.command-code {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-teal);
+  background-color: var(--color-teal-light);
+  padding: 0.4rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid #99F6E4;
+  /* Override dari code global – tampil sebagai blok */
+  line-height: 1.4;
+  white-space: nowrap;         /* teks perintah tidak terpotong baris */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex: 1;                     /* mengisi sisa lebar dalam .command-row */
+  min-width: 0;
+}
+
+/* Panah penghubung antar kartu (absolute, kanan tengah kartu) */
+.stage-arrow {
+  position: absolute;
+  right: -1.05rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  color: var(--color-blue);
+  font-weight: 700;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Sembunyikan panah di kartu terakhir */
+.stage-arrow--hidden {
+  display: none;
+}
+
+/* ----------------------------------------------------------------
+   8. SECTION 2 – TIPS GRID (Kesalahan Umum Pemula)
+   ---------------------------------------------------------------- */
+
+/* 3 kolom di layar lebar, 1 kolom di mobile */
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  align-items: stretch; /* semua kartu sejajar tingginya */
+}
+
+/* Kartu tips */
+.tip-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-orange); /* aksen oranye di sisi kiri */
+  border-radius: var(--radius);
+  padding: 1.25rem 1.1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  height: 100%;           /* isi penuh sel grid agar tinggi rata */
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tip-card:hover {
+  box-shadow: 0 4px 12px 0 rgb(217 119 6 / 0.12);
+}
+
+/* Ikon peringatan */
+.tip-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
+  color: var(--color-orange);
+}
+
+/* Konten teks tips */
+.tip-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+/* Judul tips H3 */
+.tip-title {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.4;
+}
+
+/* Deskripsi tips */
+.tip-desc {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  line-height: 1.55;
+}
+
+/* Inline <code> di dalam tip – override warna agar teal tetap terbaca */
+.tip-body code {
+  color: var(--color-teal);
+  background-color: var(--color-teal-light);
+}
+
+/* ----------------------------------------------------------------
+   9. SECTION 3 – SUMMARY CARD (Rangkuman Alur Belajar)
+   ---------------------------------------------------------------- */
+
+/* Wrapper luar – latar biru lembut */
+.summary-card {
+  background-color: var(--color-blue-light);
+  border: 1px solid #BFDBFE;
+  border-radius: var(--radius);
+  padding: 1.75rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Judul rangkuman */
+.summary-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-blue);
+  letter-spacing: -0.01em;
+}
+
+/* Grid 2 kolom – container 6 kartu langkah */
+.summary-steps {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+}
+
+/* Kartu individual setiap langkah */
+.summary-step {
+  background-color: var(--color-surface); /* #FFFFFF */
+  border: 1px solid var(--color-border);  /* #E2E8F0 */
+  border-radius: var(--radius);           /* 12px */
+  padding: 0.9rem 1rem;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.75rem;
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.summary-step:hover {
+  border-color: var(--color-blue);
+  box-shadow: 0 4px 10px 0 rgb(37 99 235 / 0.1);
+}
+
+/* Badge nomor – default biru */
+.step-badge {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background-color: var(--color-blue);
+  color: #FFFFFF;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Modifier badge teal (langkah 3 & 4 – Staging + Local Repo) */
+.step-badge--teal {
+  background-color: var(--color-teal);
+}
+
+/* Konten teks langkah */
+.step-content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+/* Teks langkah */
+.step-text {
+  font-size: 0.875rem;
+  color: var(--color-text);
+  line-height: 1.6;
+}
+
+/* <code> di dalam kartu langkah */
+.step-text code {
+  color: var(--color-teal);
+  background-color: #CCFBF1;
+}
+
+/* Wrapper inline untuk code + tombol Copy kecil */
+.step-cmd-wrap {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  vertical-align: middle;
+}
+
+/* Blok kalimat penutup/motivasi – terpisah dari grid */
+.summary-note {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.6rem;
+  background-color: var(--color-surface);
+  border: 1px solid #BFDBFE;
+  border-left: 4px solid var(--color-blue);
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
+}
+
+/* Ikon lampu di kiri catatan */
+.summary-note-icon {
+  font-size: 1.1rem;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+/* Teks catatan motivasi */
+.summary-note p {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  line-height: 1.6;
+}
+
+/* ----------------------------------------------------------------
+   9b. TOMBOL COPY
+   ---------------------------------------------------------------- */
+
+/* Wrapper baris perintah + tombol di kartu tahap */
+.command-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Tombol Copy – versi normal (di kartu tahap) */
+.copy-btn {
+  flex-shrink: 0;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  font-family: var(--font-sans);
+  letter-spacing: 0.03em;
+  color: var(--color-teal);
+  background-color: var(--color-teal-light);
+  border: 1px solid #99F6E4;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  line-height: 1.4;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  white-space: nowrap;
+}
+
+.copy-btn:hover {
+  background-color: var(--color-teal);
+  color: #FFFFFF;
+  border-color: var(--color-teal);
+}
+
+/* State "Tersalin!" – ditambahkan via JS */
+.copy-btn.copied {
+  background-color: #15803D;
+  color: #FFFFFF;
+  border-color: #15803D;
+}
+
+/* Tombol Copy kecil – versi inline di dalam .step-cmd-wrap */
+.copy-btn--sm {
+  padding: 0.1rem 0.4rem;
+  font-size: 0.65rem;
+}
+
+/* ----------------------------------------------------------------
+   9c. SOROTAN KARTU TAHAP (ditambahkan via JS)
+   ---------------------------------------------------------------- */
+
+/* Kartu aktif setelah diklik */
+.stage-card.is-active {
+  border-color: var(--color-blue);
+  box-shadow: 0 0 0 3px rgb(37 99 235 / 0.18), 0 4px 14px 0 rgb(37 99 235 / 0.14);
+}
+
+/* Nomor tahap membesar saat kartu aktif */
+.stage-card.is-active .stage-number {
+  opacity: 1;
+}
+
+/* ----------------------------------------------------------------
+   10. FOOTER
+   ---------------------------------------------------------------- */
+.site-footer {
+  text-align: center;
+  padding: 1.5rem 1.5rem 2rem;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  border-top: 1px solid var(--color-border);
+}
+
+/* ----------------------------------------------------------------
+   11. RESPONSIVITAS – TABLET (maks 768px)
+   ---------------------------------------------------------------- */
+@media (max-width: 768px) {
+  /* 4 tahap → 2 kolom */
+  .stages-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* 3 tips → 1 kolom */
+  .tips-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Sembunyikan panah di layout 2 kolom (arah tak konsisten) */
+  .stage-arrow {
+    display: none;
+  }
+
+  /* Kurangi padding header */
+  .site-header {
+    padding: 2rem 1.25rem 2.25rem;
+  }
+}
+
+/* ----------------------------------------------------------------
+   12. RESPONSIVITAS – MOBILE (maks 480px)
+   ---------------------------------------------------------------- */
+@media (max-width: 480px) {
+  /* 4 tahap → 1 kolom */
+  .stages-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .site-main {
+    padding: 1.75rem 1rem 2.5rem;
+    gap: 2.5rem;
+  }
+
+  .summary-card {
+    padding: 1.25rem 1.25rem;
+  }
+
+  /* Grid 2 kolom → 1 kolom di mobile kecil */
+  .summary-steps {
+    grid-template-columns: 1fr;
+  }
+
+  /* Kartu tips: ikon di atas pada layar sangat sempit */
+  .tip-card {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+}
